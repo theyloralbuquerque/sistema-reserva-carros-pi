@@ -7,15 +7,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table (name = "tb_carro")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter
 public class Carro implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -29,7 +29,26 @@ public class Carro implements Serializable {
 	private Integer anoModelo;
 	private String valor;
 	private String descricao;
+	
+	@ManyToOne // muitos-para-um.
+	@JoinColumn(name = "id_cliente") // Define a coluna id_cliente como FK na tabela Carro.
+	private Usuario cliente;
+	
+	public Carro() {
+	}
 
+	public Carro(Long idCarro, String marca, String modelo, Integer anoFabricacao, Integer anoModelo, String valor,
+			String descricao, Usuario cliente) {
+		this.idCarro = idCarro;
+		this.marca = marca;
+		this.modelo = modelo;
+		this.anoFabricacao = anoFabricacao;
+		this.anoModelo = anoModelo;
+		this.valor = valor;
+		this.descricao = descricao;
+		this.cliente = cliente;
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(idCarro);
@@ -45,5 +64,7 @@ public class Carro implements Serializable {
 		Carro other = (Carro) obj;
 		return Objects.equals(idCarro, other.idCarro);
 	}
-	
+
+
+
 }

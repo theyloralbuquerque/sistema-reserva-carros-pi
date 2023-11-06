@@ -1,22 +1,24 @@
 package com.projetointegrador.reservacarros.entities;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "tb_usuario")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter
 public class Usuario implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -27,9 +29,30 @@ public class Usuario implements Serializable{
 	private String email;
 	private String senha;
 	private String nome;
-	private Number ativo; 
-	private Date dataNascimento;
-	private Date dataCadastro;
+	private Integer ativo; 
+	private LocalDate dataNascimento;
+	private Instant dataCadastro;
+	
+	@OneToMany(mappedBy = "cliente") // um-para-muitos.
+	private Set<Carro> carros = new HashSet<>();
+	
+	public Usuario() {
+	}
+	
+	public Usuario(Long idUsuario, String email, String senha, String nome, Integer ativo, LocalDate dataNascimento,
+			Instant dataCadastro) {
+		this.idUsuario = idUsuario;
+		this.email = email;
+		this.senha = senha;
+		this.nome = nome;
+		this.ativo = ativo;
+		this.dataNascimento = dataNascimento;
+		this.dataCadastro = dataCadastro;
+	}
+	
+	public Set<Carro> getCarros() {
+		return carros;
+	}
 	
 	@Override
 	public int hashCode() {
@@ -46,4 +69,5 @@ public class Usuario implements Serializable{
 		Usuario other = (Usuario) obj;
 		return Objects.equals(idUsuario, other.idUsuario);
 	}
+
 }
